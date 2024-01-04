@@ -106,14 +106,40 @@
                     <view key="view" contentMode="scaleToFill" id="5HY-FG-z0b">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select" translatesAutoresizingMaskIntoConstraints="NO" id="DqQ-qh-Jcc">
+                                <rect key="frame" x="16" y="98" width="361" height="255"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Comment" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1CB-pS-2Xw">
+                                <rect key="frame" x="16" y="409" width="361" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zwC-Ga-Rda">
+                                <rect key="frame" x="157" y="519" width="79" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Upload"/>
+                                <connections>
+                                    <action selector="actionButtonPressed:" destination="QR1-pa-qzu" eventType="touchUpInside" id="k4d-4U-qRj"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Wpj-y1-Ito"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Upload" image="u.circle.fill" catalog="system" id="QIM-x9-kzP"/>
+                    <connections>
+                        <outlet property="actionButton" destination="zwC-Ga-Rda" id="foB-0b-0fn"/>
+                        <outlet property="commentText" destination="1CB-pS-2Xw" id="zFX-Ee-Lau"/>
+                        <outlet property="imageView" destination="DqQ-qh-Jcc" id="DoR-Da-Z6k"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v3y-ED-avX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="937" y="-142"/>
+            <point key="canvasLocation" x="936.64122137404581" y="-142.25352112676057"/>
         </scene>
         <!--Feed-->
         <scene sceneID="DZe-rh-rUc">
@@ -134,7 +160,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="89T-7f-YOz">
             <objects>
-                <tabBarController id="wry-iA-KV3" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabBarController" id="wry-iA-KV3" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="QZ2-Jh-pfQ"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uaT-Kw-Bkm">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -155,6 +181,7 @@
     <resources>
         <image name="f.cursive.circle.fill" catalog="system" width="128" height="123"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
+        <image name="select" width="95" height="91.666664123535156"/>
         <image name="u.circle.fill" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

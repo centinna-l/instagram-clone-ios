@@ -20,12 +20,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        signIn.setTitle("Sign In", for: .normal)
-        login.setTitle("Login", for: .normal)
+        
     }
 
 
     @IBAction func signInPressed(_ sender: Any) {
+        print("Sign In button clicked.")
         if emailText.text != "" && passwordText.text != "" {
             Auth.auth().createUser(withEmail: emailText.text!, password: passwordText.text! ){
                 ( authData, error) in
@@ -43,7 +43,21 @@ class ViewController: UIViewController {
     }
     
     @IBAction func loginPressed(_ sender: Any) {
-        performSegue(withIdentifier: "toFeedVC", sender: nil)
+        print("Login Button Clicked!")
+        if emailText.text != "" && passwordText.text != ""{
+            Auth.auth().signIn(withEmail: emailText.text!, password: passwordText.text!){
+                ( authData, error) in
+                if error != nil {
+                    self.makeAlert(title: "Firebase Error", message: error?.localizedDescription ?? "Something went wrong!")
+                }else{
+                    self.performSegue(withIdentifier: "toFeedVC", sender: nil)
+                }
+            }
+        }else{
+            makeAlert(title: "Error", message: "Email/Password Missing!")
+        }
+        
+        
     }
     
     func makeAlert(title: String, message: String  ){
