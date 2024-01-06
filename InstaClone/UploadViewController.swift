@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import Firebase
 
 class UploadViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var commentText: UITextField!
     
@@ -34,17 +35,58 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         imageView.image = info[.originalImage] as? UIImage
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func actionButtonPressed(_ sender: UIButton) {
+        print(sender.currentTitle ?? "Button Clicked")
+        let storage = Storage.storage()
+        let reference = storage.reference()
+        
+        let mediaFolder = reference.child("media") // get the reference for the media folder in firebase storage.
+        
+        // we need to convert the image to a buffer type.
+        if let buffer = imageView.image?.jpegData(compressionQuality: 0.5) {
+            let uuid = UUID().uuidString
+            let imageReference = mediaFolder.child("\(uuid).jpg")
+            imageReference.putData(buffer, metadata: nil){
+                ( metaData, error) in
+                if error != nil {
+                    print(error?.localizedDescription ?? "Something went wrong.")
+                    self.makeAlert(title: "Error", message: error?.localizedDescription ?? "Firebase: Something went wrong.")
+                }else{
+                    imageReference.downloadURL(){
+                        ( url, error) in
+                        if error == nil {
+                            let imageUrl = url?.absoluteString
+                            print(imageUrl ?? "Empty String URL Present here!")
+                            // Upload the link to firebase firestore.
+                            let firestoreDatabase = Firestore.firestore()
+                            var firestoreReference: DocumentReference? = nil
+                            
+                            let post = [ "imageUrl": imageUrl!, "postedBy": Auth.auth().currentUser!.email!, "comment": self.commentText.text!, "date": FieldValue.serverTimestamp(), "likes": 0] as [String : Any]
+                            
+                            firestoreReference = firestoreDatabase.collection("Posts").addDocument(data: post, completion: {
+                                (error) in
+                                print("Firestore Reference! ")
+                                if error != nil {
+                                    self.makeAlert(title: "Error", message: error?.localizedDescription ?? "Unable to store image.")
+                                }else{
+                                    self.imageView.image = UIImage(named: "select")
+                                    self.commentText.text = ""
+                                    print("Post Uploaded Successfully!")
+                                    self.tabBarController?.selectedIndex = 0
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func makeAlert(title: String, message: String ){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        let okButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
+        alert.addAction(okButton)
+        self.present( alert, animated: true, completion: nil)
     }
-    */
-
+    
 }
